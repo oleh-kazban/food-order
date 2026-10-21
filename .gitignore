@@ -24,5 +24,8 @@ dist-ssr
 *.sln
 *.sw?
 
-MIGRATION.md
+# AI Agent Local Specifications (external to repository)
 GEMINI.md
+MIGRATION.md
+STARTUP.md
+AGENTS.md
