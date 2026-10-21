@@ -21,7 +21,7 @@ This guide defines the target enterprise blueprint. When applied to any starter 
 | **Dependency Integrity**   | No architectural boundary enforcement                          | Circular dependency gate via `madge`                                                                                                       | Guarantees clean directed acyclic dependency graphs (DAG); prevents runtime TDZ errors.  |
 | **Git Lifecycle Hooks**    | Absent or unmaintained `.git` hooks                            | `husky` v9 + `lint-staged` pre-commit and pre-push (`madge`)                                                                               | Sub-second staged AST & style validation at local commit boundary; fast DX at scale.     |
 | **Task Orchestration**     | Standard package script execution                              | Optional Nx Standalone (`project.json`, `nx.json`) with computation caching                                                                | Caches target executions and executes only on affected files during local hooks.         |
-| **CI/CD & PR Protocol**    | Absent or ad-hoc CI scripts                                    | GitHub Actions (`ci.yaml`, `pr-validation.yaml`) + PR Template                                                                          | Automated trunk CI, affected/full PR validation gates, and structured review checklists. |
+| **CI/CD & PR Protocol**    | Absent or ad-hoc CI scripts                                    | GitHub Actions (`ci.yaml`, `pr-validation.yaml`) + PR Template                                                                             | Automated trunk CI, affected/full PR validation gates, and structured review checklists. |
 
 ---
 
@@ -253,7 +253,7 @@ To guarantee atomic bisectability (`git bisect`), rollback safety, and readable 
                ['^@<alias>/'],
                ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
                ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-               ['^.+\\\.s?css$'],
+               ['^.+\\.s?css$'],
              ],
            },
          ],
@@ -351,10 +351,7 @@ To guarantee atomic bisectability (`git bisect`), rollback safety, and readable 
        "lint:staged": "lint-staged"
      },
      "lint-staged": {
-       "*.{js,ts,tsx}": [
-         "eslint --max-warnings 0 --no-warn-ignored --fix",
-         "prettier --write"
-       ],
+       "*.{js,ts,tsx}": ["eslint --max-warnings 0 --no-warn-ignored --fix", "prettier --write"],
        "*.{json,css,html,md}": ["prettier --write"]
      }
    }
@@ -616,7 +613,8 @@ Ensure `package.json` reflects the canonical script interface:
          - name: Run Quality Matrix
            run: pnpm run lint && pnpm run typecheck && pnpm run build
    ```
-   *(Note: When Phase 7 Nx orchestration is enabled, replace the last step with `pnpm nx run-many -t lint typecheck build --parallel=3`)*.
+
+   _(Note: When Phase 7 Nx orchestration is enabled, replace the last step with `pnpm nx run-many -t lint typecheck build --parallel=3`)_.
 
 3. **Create PR Validation Workflow (`.github/workflows/pr-validation.yaml`):**
    Enforces identical validation on pull requests targeting trunk:
@@ -671,7 +669,8 @@ Ensure `package.json` reflects the canonical script interface:
              --head=HEAD
              --parallel=3
    ```
-   *(Note: For non-Nx standalone setups without affected calculation, substitute the final step with `pnpm run lint && pnpm run typecheck && pnpm run build`)*.
+
+   _(Note: For non-Nx standalone setups without affected calculation, substitute the final step with `pnpm run lint && pnpm run typecheck && pnpm run build`)_.
 
 4. **Phase 9 Commit Checkpoint:**
    ```bash
