@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "main",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*"],
+    "production": ["default", "!{projectRoot}/eslint.config.js", "!{projectRoot}/.prettierrc.json"]
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "lint": {
+      "cache": true,
+      "inputs": ["default"]
+    },
+    "format:check": {
+      "cache": true,
+      "inputs": ["default"]
+    },
+    "check:cycles": {
+      "cache": true,
+      "inputs": ["default"]
+    }
+  },
+  "analytics": false
+}
