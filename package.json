@@ -6,11 +6,16 @@
   "packageManager": "pnpm@12.10.1",
   "scripts": {
     "prepare": "husky",
+    "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0 --no-warn-ignored",
+    "lint:fix": "eslint . --max-warnings 0 --no-warn-ignored --fix",
     "lint:staged": "lint-staged",
     "check:cycles": "madge --circular --extensions ts,tsx src",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "preview": "vite preview"
   },
   "lint-staged": {
