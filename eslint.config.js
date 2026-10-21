@@ -5,6 +5,7 @@ import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import sonarjs from 'eslint-plugin-sonarjs';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -21,6 +22,7 @@ export default tseslint.config(
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
+  sonarjs.configs.recommended,
   {
     files: ['**/*.{js,ts,tsx}'],
     languageOptions: {
@@ -28,8 +30,12 @@ export default tseslint.config(
       sourceType: 'module',
       parserOptions: {
         ecmaFeatures: { jsx: true },
+        tsconfigRootDir: import.meta.dirname,
       },
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
     plugins: {
       react: reactPlugin,
@@ -54,6 +60,13 @@ export default tseslint.config(
           varsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/array-type': [
+        'error',
+        {
+          default: 'array',
+          readonly: 'array',
+        },
+      ],
       'no-duplicate-imports': 'error',
       'padding-line-between-statements': [
         'error',
@@ -65,8 +78,8 @@ export default tseslint.config(
         {
           groups: [
             ['^react'],
-            ['^@?\\w'],
-            ['^@order/'],
+            ['^(?!@order)@?\\w'],
+            ['^@order(/.*|$)'],
             ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
             ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
             ['^.+\\.s?css$'],
@@ -74,6 +87,17 @@ export default tseslint.config(
         },
       ],
       'simple-import-sort/exports': 'error',
+
+      // --- SonarQube & Shift-Left Code Quality ---
+      'sonarjs/cognitive-complexity': ['error', 15],
+      'sonarjs/no-hardcoded-ip': 'warn',
+      'sonarjs/todo-tag': 'warn',
+      'max-depth': ['error', 4],
+      'max-params': ['error', 4],
+      'no-constant-binary-expression': 'error',
+      'no-nested-ternary': 'error',
+      'no-self-compare': 'error',
+      'use-isnan': 'error',
     },
   },
   eslintConfigPrettier,
