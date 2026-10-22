@@ -2,13 +2,15 @@ import { useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useCart } from '@order/state/cart.context';
-import { CartHandler } from '@order/types/Cart.types';
+import { CartHandler, CheckoutHandler } from '@order/types/Cart.types';
 
 import { CartItem } from './CartItem';
+import { Checkout } from './Checkout';
 
 export function Cart({ ref }: { ref?: React.Ref<CartHandler> }) {
-  const { items, increaseItemAmount, decreaseItemAmount } = useCart();
+  const { items, total, increaseItemAmount, decreaseItemAmount } = useCart();
   const dialog = useRef<HTMLDialogElement>(null);
+  const checkoutRef = useRef<CheckoutHandler>(null);
 
   useImperativeHandle(ref, () => {
     return {
@@ -17,14 +19,9 @@ export function Cart({ ref }: { ref?: React.Ref<CartHandler> }) {
     };
   });
 
-  const total = items.reduce((acc, current) => {
-    acc += Number(current.price) * current.amount;
-
-    return acc;
-  }, 0);
-
   return createPortal(
     <dialog ref={dialog} className="modal cart">
+      <Checkout ref={checkoutRef} />
       <h2>Your Cart</h2>
       <ul>
         {items.map(({ id, name, amount, price }) => (
@@ -39,12 +36,19 @@ export function Cart({ ref }: { ref?: React.Ref<CartHandler> }) {
           />
         ))}
       </ul>
-      <p className="cart-total">${total.toFixed(2)}</p>
+      <p className="cart-total">${total}</p>
       <p className="modal-actions">
         <button type="button" className="text-button" onClick={() => dialog.current?.close()}>
           Close
         </button>
-        <button type="button" className="button">
+        <button
+          type="button"
+          className="button"
+          onClick={() => {
+            dialog.current?.close();
+            checkoutRef.current?.open();
+          }}
+        >
           Go to Checkout
         </button>
       </p>
