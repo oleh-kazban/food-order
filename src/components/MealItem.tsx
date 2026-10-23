@@ -1,10 +1,11 @@
 import { useCart } from '@order/state/cart.context';
+import { currencyFormatter } from '@order/utils/currencyFormatter';
 
 type MealItemProps = {
   id: string;
   img: string;
   name: string;
-  price: string;
+  price: number;
   description: string;
 };
 
@@ -21,7 +22,7 @@ export function MealItem({ id, img, name, price, description }: MealItemProps) {
         <img src={img} alt={name} />
         <div>
           <h3>{name}</h3>
-          <p className="meal-item-price">${price}</p>
+          <p className="meal-item-price">{currencyFormatter.format(price)}</p>
           <p className="meal-item-description">{description}</p>
         </div>
         <p className="meal-item-actions">

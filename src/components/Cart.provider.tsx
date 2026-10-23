@@ -49,7 +49,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const contextProviderValue = {
     items,
-    total: total.toFixed(2),
+    total,
     addToCart,
     increaseItemAmount,
     decreaseItemAmount,

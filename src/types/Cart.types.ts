@@ -1,13 +1,13 @@
 export interface CartItem {
   id: string;
   name: string;
-  price: string;
+  price: number;
   amount: number;
 }
 
 export interface CartContextValue {
   items: CartItem[];
-  total: string;
+  total: number;
   addToCart: (_item: CartItem) => void;
   increaseItemAmount: (_id: string) => void;
   decreaseItemAmount: (_id: string) => void;

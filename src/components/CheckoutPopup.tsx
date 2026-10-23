@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useCart } from '@order/state/cart.context';
 import { useUserProgress } from '@order/state/userProgress.context';
 import { Modal } from '@order/ui/Modal';
+import { currencyFormatter } from '@order/utils/currencyFormatter';
 
 export function CheckoutPopup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,7 +58,7 @@ export function CheckoutPopup() {
     <Modal open={state === 'checkout'} onClose={clearProgress}>
       <form onSubmit={handleCheckout}>
         <h2>Checkout</h2>
-        <p>Total Amount: ${total}</p>
+        <p>Total Amount: {currencyFormatter.format(total)}</p>
 
         <div className="control">
           <label htmlFor="name">Full Name</label>

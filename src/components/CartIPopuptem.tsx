@@ -1,7 +1,9 @@
+import { currencyFormatter } from '@order/utils/currencyFormatter';
+
 type CartPopupItemProps = {
   id: string;
   name: string;
-  price: string;
+  price: number;
   amount: number;
   onIncreaseAmount: (_id: string) => void;
   onDecreaseAmount: (_id: string) => void;
@@ -18,7 +20,7 @@ export function CartPopupItem({
   return (
     <li className="cart-item">
       <p>
-        {name} - {amount} x ${price}
+        {name} - {amount} x {currencyFormatter.format(price)}
       </p>
       <p className="cart-item-actions">
         <button type="button" onClick={() => onDecreaseAmount(id)}>
