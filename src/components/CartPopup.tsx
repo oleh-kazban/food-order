@@ -1,27 +1,15 @@
-import { useImperativeHandle, useRef } from 'react';
-import { createPortal } from 'react-dom';
-
 import { useCart } from '@order/state/cart.context';
-import { CartHandler, CheckoutHandler } from '@order/types/Cart.types';
+import { useUserProgress } from '@order/state/userProgress.context';
+import { Modal } from '@order/ui/Modal';
 
 import { CartPopupItem } from './CartIPopuptem';
-import { CheckoutPopup } from './CheckoutPopup';
 
-export function CartPopup({ ref }: { ref?: React.Ref<CartHandler> }) {
+export function CartPopup() {
   const { items, total, increaseItemAmount, decreaseItemAmount } = useCart();
-  const dialog = useRef<HTMLDialogElement>(null);
-  const checkoutRef = useRef<CheckoutHandler>(null);
+  const { state, clearProgress, showCheckout } = useUserProgress();
 
-  useImperativeHandle(ref, () => {
-    return {
-      open: () => dialog.current?.showModal(),
-      close: () => dialog.current?.close(),
-    };
-  });
-
-  return createPortal(
-    <dialog ref={dialog} className="modal cart">
-      <CheckoutPopup ref={checkoutRef} />
+  return (
+    <Modal className="cart" open={state === 'cart'} onClose={clearProgress}>
       <h2>Your Cart</h2>
       <ul>
         {items.map(({ id, name, amount, price }) => (
@@ -38,21 +26,13 @@ export function CartPopup({ ref }: { ref?: React.Ref<CartHandler> }) {
       </ul>
       <p className="cart-total">${total}</p>
       <p className="modal-actions">
-        <button type="button" className="text-button" onClick={() => dialog.current?.close()}>
+        <button type="button" className="text-button" onClick={clearProgress}>
           Close
         </button>
-        <button
-          type="button"
-          className="button"
-          onClick={() => {
-            dialog.current?.close();
-            checkoutRef.current?.open();
-          }}
-        >
+        <button type="button" className="button" onClick={showCheckout}>
           Go to Checkout
         </button>
       </p>
-    </dialog>,
-    document.getElementById('modal') as Element,
+    </Modal>
   );
 }

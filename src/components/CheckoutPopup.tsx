@@ -1,20 +1,13 @@
-import { useImperativeHandle, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useState } from 'react';
 
 import { useCart } from '@order/state/cart.context';
-import { CheckoutHandler } from '@order/types/Cart.types';
+import { useUserProgress } from '@order/state/userProgress.context';
+import { Modal } from '@order/ui/Modal';
 
-export function CheckoutPopup({ ref }: { ref?: React.Ref<CheckoutHandler> }) {
-  const dialog = useRef<HTMLDialogElement>(null);
+export function CheckoutPopup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { items, total, onCheckout } = useCart();
-
-  useImperativeHandle(ref, () => {
-    return {
-      open: () => dialog.current?.showModal(),
-      close: () => dialog.current?.close(),
-    };
-  });
+  const { state, clearProgress, showSuccess } = useUserProgress();
 
   const handleCheckout = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -52,7 +45,7 @@ export function CheckoutPopup({ ref }: { ref?: React.Ref<CheckoutHandler> }) {
       }
 
       onCheckout();
-      dialog.current?.close();
+      showSuccess();
     } catch (error) {
       console.log('ERROR: ', error);
     } finally {
@@ -60,8 +53,8 @@ export function CheckoutPopup({ ref }: { ref?: React.Ref<CheckoutHandler> }) {
     }
   };
 
-  return createPortal(
-    <dialog ref={dialog} className="modal">
+  return (
+    <Modal open={state === 'checkout'} onClose={clearProgress}>
       <form onSubmit={handleCheckout}>
         <h2>Checkout</h2>
         <p>Total Amount: ${total}</p>
@@ -93,7 +86,7 @@ export function CheckoutPopup({ ref }: { ref?: React.Ref<CheckoutHandler> }) {
         </div>
 
         <p className="modal-actions">
-          <button type="button" className="text-button" onClick={() => dialog.current?.close()}>
+          <button type="button" className="text-button" onClick={clearProgress}>
             Close
           </button>
           <button type="submit" className="button" disabled={isSubmitting}>
@@ -101,7 +94,6 @@ export function CheckoutPopup({ ref }: { ref?: React.Ref<CheckoutHandler> }) {
           </button>
         </p>
       </form>
-    </dialog>,
-    document.getElementById('modal') as Element,
+    </Modal>
   );
 }

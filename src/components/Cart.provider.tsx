@@ -47,18 +47,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const total = items.reduce((acc, { price, amount }) => acc + Number(price) * amount, 0);
 
-  return (
-    <CartContext.Provider
-      value={{
-        items,
-        total: total.toFixed(2),
-        addToCart,
-        increaseItemAmount,
-        decreaseItemAmount,
-        onCheckout,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+  const contextProviderValue = {
+    items,
+    total: total.toFixed(2),
+    addToCart,
+    increaseItemAmount,
+    decreaseItemAmount,
+    onCheckout,
+  };
+
+  return <CartContext.Provider value={contextProviderValue}>{children}</CartContext.Provider>;
 }
