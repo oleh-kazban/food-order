@@ -29,7 +29,7 @@ export function CartPopup() {
         <button type="button" className="text-button" onClick={clearProgress}>
           Close
         </button>
-        <button type="button" className="button" onClick={showCheckout}>
+        <button type="button" className="button" onClick={showCheckout} disabled={!items.length}>
           Go to Checkout
         </button>
       </p>
