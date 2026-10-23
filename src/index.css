@@ -271,6 +271,30 @@ h1 {
   margin: 0;
 }
 
+.no-meals {
+  text-align: center;
+  max-width: 40rem;
+  width: 90%;
+  margin: 3rem auto;
+  padding: 2.5rem 2rem;
+  background-color: #1d1a16;
+  border-radius: 1rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+.no-meals h2 {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.5rem;
+  color: #ffc404;
+  margin: 0 0 0.75rem 0;
+}
+
+.no-meals p {
+  margin: 0;
+  color: #d9e2f1;
+  font-size: 1.1rem;
+}
+
 @keyframes fade-slide-up {
   from {
     opacity: 0;

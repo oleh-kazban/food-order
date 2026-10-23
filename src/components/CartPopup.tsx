@@ -4,10 +4,10 @@ import { createPortal } from 'react-dom';
 import { useCart } from '@order/state/cart.context';
 import { CartHandler, CheckoutHandler } from '@order/types/Cart.types';
 
-import { CartItem } from './CartItem';
-import { Checkout } from './Checkout';
+import { CartPopupItem } from './CartIPopuptem';
+import { CheckoutPopup } from './CheckoutPopup';
 
-export function Cart({ ref }: { ref?: React.Ref<CartHandler> }) {
+export function CartPopup({ ref }: { ref?: React.Ref<CartHandler> }) {
   const { items, total, increaseItemAmount, decreaseItemAmount } = useCart();
   const dialog = useRef<HTMLDialogElement>(null);
   const checkoutRef = useRef<CheckoutHandler>(null);
@@ -21,11 +21,11 @@ export function Cart({ ref }: { ref?: React.Ref<CartHandler> }) {
 
   return createPortal(
     <dialog ref={dialog} className="modal cart">
-      <Checkout ref={checkoutRef} />
+      <CheckoutPopup ref={checkoutRef} />
       <h2>Your Cart</h2>
       <ul>
         {items.map(({ id, name, amount, price }) => (
-          <CartItem
+          <CartPopupItem
             key={id}
             id={id}
             name={name}

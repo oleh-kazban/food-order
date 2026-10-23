@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { useCart } from '@order/state/cart.context';
 import { CheckoutHandler } from '@order/types/Cart.types';
 
-export function Checkout({ ref }: { ref?: React.Ref<CheckoutHandler> }) {
+export function CheckoutPopup({ ref }: { ref?: React.Ref<CheckoutHandler> }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { items, total, onCheckout } = useCart();

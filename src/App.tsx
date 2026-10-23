@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { CartProvider } from './components/Cart.provider';
 import { Header } from './components/Header';
 import { MealList } from './components/MealsList';
+import { NoMeals } from './components/NoMeals';
 import { Meal } from './types/Meal.types';
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
   return (
     <CartProvider>
       <Header />
-      <MealList meals={meals} />
+      {meals && meals.length ? <MealList meals={meals} /> : <NoMeals />}
     </CartProvider>
   );
 }

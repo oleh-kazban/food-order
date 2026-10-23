@@ -1,4 +1,4 @@
-type CartItemProps = {
+type CartPopupItemProps = {
   id: string;
   name: string;
   price: string;
@@ -7,14 +7,14 @@ type CartItemProps = {
   onDecreaseAmount: (_id: string) => void;
 };
 
-export function CartItem({
+export function CartPopupItem({
   id,
   name,
   price,
   amount,
   onIncreaseAmount,
   onDecreaseAmount,
-}: CartItemProps) {
+}: CartPopupItemProps) {
   return (
     <li className="cart-item">
       <p>

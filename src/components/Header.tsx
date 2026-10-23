@@ -5,7 +5,7 @@ import { CartHandler } from '@order/types/Cart.types';
 
 import logoImg from '../assets/logo.jpg';
 
-import { Cart } from './Cart';
+import { CartPopup } from './CartPopup';
 
 export function Header() {
   const { items } = useCart();
@@ -15,7 +15,7 @@ export function Header() {
 
   return (
     <header id="main-header">
-      <Cart ref={cartRef} />
+      <CartPopup ref={cartRef} />
       <div id="title">
         <img src={logoImg} alt="A restaurant" />
         <h1>ReactFood</h1>
